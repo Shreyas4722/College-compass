@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+*/node_modules/
+client/node_modules/
+server/node_modules/
+package-lock.json
+*/package-lock.json
+
+# Environment variables (CONTAINS YOUR MONGODB PASSWORD!)
+.env
+server/.env
+client/.env
+.env.local
+*.env
+
+# Build files
+dist/
+build/
+.vite/
+client/dist/
+client/.vite/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.backup
+seed.js.backup
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Logs
+*.log
+npm-debug.log*
+
+# Deployment files
+DEPLOYMENT.md
+start.sh
