@@ -3,6 +3,10 @@
     {
       "source": "/api/(.*)",
       "destination": "https://college-compass-9qu0.onrender.com/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
