@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Search from './pages/Search'
-import Navigate from './pages/Navigate'
 import Faculty from './pages/Faculty'
 import About from './pages/About'
 import './App.css'
@@ -15,7 +14,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/navigate" element={<Navigate />} />
           <Route path="/faculty" element={<Faculty />} />
           <Route path="/about" element={<About />} />
         </Routes>

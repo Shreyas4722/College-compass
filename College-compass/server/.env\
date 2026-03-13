@@ -1,0 +1,4 @@
+
+cp .env.example .env
+
+ls -la .env

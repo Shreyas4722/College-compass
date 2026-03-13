@@ -33,9 +33,6 @@ function Navbar() {
           <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`}>
             About
           </Link>
-          <Link to="/navigate" className={`nav-link ${isActive('/navigate') ? 'active' : ''}`}>
-            🧭 Navigate
-          </Link>
         </div>
       </div>
     </nav>
