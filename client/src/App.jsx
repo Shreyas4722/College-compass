@@ -1,27 +1,28 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar'
-import Home from './pages/Home'
-import Search from './pages/Search'
-import Navigate from './pages/Navigate'
-import Faculty from './pages/Faculty'
-import About from './pages/About'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './theme.css';
+import './App.css';
+import Navbar from './components/Navbar';
+import Cursor from './components/Cursor';
+import Home from './pages/Home';
+import Search from './pages/Search';
+import Faculty from './pages/Faculty';
+import Navigate from './pages/Navigate';
+import About from './pages/About';
 
-function App() {
+export default function App() {
   return (
     <Router>
-      <div className="app">
+      <Cursor />
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/navigate" element={<Navigate />} />
           <Route path="/faculty" element={<Faculty />} />
+          <Route path="/navigate" element={<Navigate />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </Router>
-  )
+  );
 }
-
-export default App

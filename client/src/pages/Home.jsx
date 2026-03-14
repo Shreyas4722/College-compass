@@ -1,98 +1,126 @@
-import { Link } from 'react-router-dom'
-import './Home.css'
+import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import './Home.css';
 
-function Home() {
+const stats = [
+  { v: '23+', l: 'Locations' },
+  { v: '8', l: 'Blocks' },
+  { v: '174', l: 'Faculty' },
+  { v: '360°', l: 'Tours' },
+];
+const features = [
+  { icon: '🧭', title: 'Navigate', desc: 'Step-by-step walking directions between any two campus points.', link: '/navigate' },
+  { icon: '🔍', title: 'Search', desc: 'Find any room, lab, or facility instantly by name or block.', link: '/search' },
+  { icon: '👨‍🏫', title: 'Faculty', desc: 'Browse all 174 faculty members by department.', link: '/faculty' },
+  { icon: '🌐', title: '360° Tours', desc: 'Immersive virtual tours of every academic block.', link: '/navigate' },
+];
+
+export default function Home() {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, dots, raf;
+    const init = () => {
+      w = canvas.width = canvas.offsetWidth;
+      h = canvas.height = canvas.offsetHeight;
+      dots = Array.from({ length: 30 }, () => ({
+        x: Math.random() * w, y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
+        r: Math.random() + 0.5,
+      }));
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h);
+      dots.forEach(d => {
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > w) d.vx *= -1;
+        if (d.y < 0 || d.y > h) d.vy *= -1;
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.fill();
+      });
+      dots.forEach((a, i) => dots.slice(i + 1).forEach(b => {
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        if (dist < 120) {
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = `rgba(255,255,255,${0.06 * (1 - dist / 120)})`;
+          ctx.lineWidth = 0.5; ctx.stroke();
+        }
+      }));
+      raf = requestAnimationFrame(draw);
+    };
+    init(); draw();
+    window.addEventListener('resize', init);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', init); };
+  }, []);
+
   return (
-    <div className="home-page">
-      <section className="hero">
-        <div className="container">
-          <div className="hero-content fade-in">
-            <h1 className="hero-title">
-              Navigate Campus
-              <span className="hero-highlight">Effortlessly</span>
-            </h1>
-            <p className="hero-description">
-              Your smart guide to Alliance University. Find classrooms, faculty offices, 
-              cafeterias, libraries, and more—all in one place, completely offline.
-            </p>
-            <div className="hero-buttons">
-              <Link to="/search" className="btn btn-primary">
-                Start Exploring
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </Link>
-              <Link to="/about" className="btn btn-secondary">
-                Learn More
-              </Link>
+    <main className="home">
+
+      {/* MAROON HERO BANNER - same as other pages */}
+      <section className="home-banner">
+        <canvas ref={canvasRef} className="hero-canvas" />
+        <div className="container home-banner-inner">
+          <div className="home-banner-text fade-up">
+            <p className="home-eyebrow">Alliance University · Bangalore</p>
+            <h1>Your Campus<br /><span className="home-outline">Navigation Guide</span></h1>
+            <p className="home-sub">Find every room, lab, faculty cabin, and facility across campus — no app, no GPS, no login required.</p>
+            <div className="home-btns">
+              <Link to="/navigate" className="btn-home-primary">Get Directions →</Link>
+              <Link to="/search" className="btn-home-outline">Browse Locations</Link>
             </div>
           </div>
-          
-          <div className="hero-visual fade-in">
-            <div className="visual-card card-1">
-              <div className="card-icon">📍</div>
-              <h3>Quick Search</h3>
-              <p>Find any location instantly</p>
-            </div>
-            <div className="visual-card card-2">
-              <div className="card-icon">👨‍🏫</div>
-              <h3>Faculty Directory</h3>
-              <p>Locate professors easily</p>
-            </div>
-            <div className="visual-card card-3">
-              <div className="card-icon">🗺️</div>
-              <h3>Offline Access</h3>
-              <p>Works without internet</p>
-            </div>
+        </div>
+        <div className="home-gold-bar" />
+      </section>
+
+      {/* STATS */}
+      <section className="stats-section">
+        <div className="container">
+          <div className="stats-row">
+            {stats.map(s => (
+              <div key={s.l} className="stat">
+                <span className="stat-v">{s.v}</span>
+                <span className="stat-l">{s.l}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="features">
+      {/* FEATURES */}
+      <section className="feats-section">
         <div className="container">
-          <h2 className="section-title">Why College Compass?</h2>
-          
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-number">01</div>
-              <h3>Simple & Intuitive</h3>
-              <p>Clean interface designed for everyone, no technical knowledge required</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-number">02</div>
-              <h3>Lightning Fast</h3>
-              <p>Database-driven system ensures instant search results</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-number">03</div>
-              <h3>Eco-Friendly</h3>
-              <p>Offline functionality reduces network dependency and energy consumption</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-number">04</div>
-              <h3>Privacy First</h3>
-              <p>No location tracking or camera access needed</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-number">05</div>
-              <h3>Budget Conscious</h3>
-              <p>Low-cost solution without expensive hardware requirements</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-number">06</div>
-              <h3>Highly Scalable</h3>
-              <p>Easy to implement in other institutions</p>
-            </div>
+          <div className="sec-head fade-up">
+            <p className="eyebrow">What you can do</p>
+            <h2>Everything you need on one platform</h2>
+          </div>
+          <div className="feats-grid">
+            {features.map((f, i) => (
+              <Link to={f.link} key={f.title} className={`feat-card card fade-up stagger-${i + 1}`}>
+                <span className="feat-ic">{f.icon}</span>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+                <span className="feat-cta">Explore →</span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
-    </div>
-  )
+
+      {/* CTA */}
+      <section className="cta-section">
+        <div className="container">
+          <div className="cta-box">
+            <div className="cta-text">
+              <h2>Lost on campus?</h2>
+              <p>Pick where you are and where you need to go.</p>
+            </div>
+            <Link to="/navigate" className="btn-home-primary">Open Navigator →</Link>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }
-
-export default Home
